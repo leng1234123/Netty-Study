@@ -18,7 +18,24 @@ import io.netty.channel.ChannelHandler.Sharable;
  */
 @Sharable
 public class EchoServerHandler extends ChannelInboundHandlerAdapter{
-
+	
+	//  pipeline.fireChannelRegistered();
+	@Override
+	public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
+		System.out.println("channelRegistered");
+	}
+	
+	// pipeline.invokeHandlerAddedIfNeeded();
+	@Override
+	public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
+		System.out.println("handlerAdded");
+	}
+	
+	// pipeline.fireChannelActive();
+	@Override
+	public void channelActive(ChannelHandlerContext ctx) throws Exception {
+		System.out.println("channelActive");
+	}
 	/**
 	 * channelRead() - 每个信息入站都会调用
 	 */
