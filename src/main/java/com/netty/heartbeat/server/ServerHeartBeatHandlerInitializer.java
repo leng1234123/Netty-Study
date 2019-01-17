@@ -12,14 +12,15 @@ public class ServerHeartBeatHandlerInitializer extends ChannelInitializer<Socket
 
 	@Override
 	protected void initChannel(SocketChannel ch) throws Exception {
-		ChannelPipeline pipeline =ch.pipeline();
-		//配置心跳(检测读超时时间 10s),出入站数据处理,Handler类
-		//long readerIdleTime, long writerIdleTime, long allIdleTime,TimeUnit unit
-	//每隔10s检测channelRead方法是否被调用,如果10s内channelRead方法没有被触发,就会调用userEventTriggered方法
-		pipeline.addLast(new IdleStateHandler(10, 0, 0,TimeUnit.SECONDS)); 
-		pipeline.addLast("decoder", new ServerMsgDecoder(1024 * 1024, 4, 2, 0, 0, false));  
-		pipeline.addLast("encoder", new StringEncoder());  
-		pipeline.addLast(new ServerHeartBeatHandler());  
+		ChannelPipeline pipeline = ch.pipeline();
+		// 配置心跳(检测读超时时间 10s),出入站数据处理,Handler类
+		// long readerIdleTime, long writerIdleTime, long allIdleTime,TimeUnit
+		// unit
+		// 每隔10s检测channelRead方法是否被调用,如果10s内channelRead方法没有被触发,就会调用userEventTriggered方法
+		pipeline.addLast(new IdleStateHandler(10, 0, 0, TimeUnit.SECONDS));
+		pipeline.addLast("decoder", new ServerMsgDecoder(1024 * 1024, 4, 2, 0, 0, false));
+		pipeline.addLast("encoder", new StringEncoder());
+		pipeline.addLast(new ServerHeartBeatHandler());
 	}
 
 }

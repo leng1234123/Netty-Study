@@ -10,8 +10,8 @@ import io.netty.channel.CombinedChannelDuplexHandler;
  * @author lengyul
  *
  */
-public class CombinedByteCharCodec extends CombinedChannelDuplexHandler<ByteToCharDecoder,CharToByteEncoder> {
-		public CombinedByteCharCodec() {
-        super(new ByteToCharDecoder(), new CharToByteEncoder());
-		}
+public class CombinedByteCharCodec extends CombinedChannelDuplexHandler<ByteToCharDecoder, CharToByteEncoder> {
+	public CombinedByteCharCodec() {
+		super(new ByteToCharDecoder(), new CharToByteEncoder());
+	}
 }

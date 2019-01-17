@@ -12,23 +12,22 @@ import io.netty.handler.codec.ByteToMessageDecoder;
  *
  */
 public class FixedLengthFrameDecoder extends ByteToMessageDecoder {
-	
+
 	private final int frameLength;
 
-    public FixedLengthFrameDecoder(int frameLength) { //设置每次接收数字节大小
-        if (frameLength <= 0) {
-            throw new IllegalArgumentException(
-                    "frameLength must be a positive integer: " + frameLength);
-        }
-        this.frameLength = frameLength;
-    }
-	
+	public FixedLengthFrameDecoder(int frameLength) { // 设置每次接收数字节大小
+		if (frameLength <= 0) {
+			throw new IllegalArgumentException("frameLength must be a positive integer: " + frameLength);
+		}
+		this.frameLength = frameLength;
+	}
+
 	@Override
 	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-		if (in.readableBytes() >= frameLength) { //如果可读字节数大于设置字节数，进行读取
-            ByteBuf buf = in.readBytes(frameLength);
-            out.add(buf);
-        }
+		if (in.readableBytes() >= frameLength) { // 如果可读字节数大于设置字节数，进行读取
+			ByteBuf buf = in.readBytes(frameLength);
+			out.add(buf);
+		}
 	}
 
 }

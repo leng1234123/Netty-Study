@@ -15,9 +15,9 @@ public class ByteToCharDecoder extends ByteToMessageDecoder {
 
 	@Override
 	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-		if (in.readableBytes() >= 2) {  //java中char类型占2个字节
-            out.add(in.readChar());
-        }
+		if (in.readableBytes() >= 2) { // java中char类型占2个字节
+			out.add(in.readChar());
+		}
 	}
 
 }
