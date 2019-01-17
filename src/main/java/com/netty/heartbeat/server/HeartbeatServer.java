@@ -1,6 +1,5 @@
 package com.netty.heartbeat.server;
 
-import com.netty.redis.client.RedisClientChannelInitializer;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;

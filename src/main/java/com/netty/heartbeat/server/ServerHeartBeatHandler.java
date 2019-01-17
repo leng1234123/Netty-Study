@@ -1,7 +1,7 @@
 package com.netty.heartbeat.server;
 
-import com.netty.heartbeat.message.HeartbeatMsg;
-import com.netty.heartbeat.message.ServerMessageProcess;
+import com.netty.heartbeat.message.HeartbeatMessage;
+
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
@@ -11,7 +11,7 @@ public class ServerHeartBeatHandler extends ChannelInboundHandlerAdapter{
 
 	private int timeout = 0;  //超时次数
 	
-	private ServerMessageProcess smp =new ServerMessageProcess();
+	private ServerMessageProcess smp = new ServerMessageProcess();
 	/**
 	 * 如果读超时触发次方法
 	 */
@@ -37,11 +37,9 @@ public class ServerHeartBeatHandler extends ChannelInboundHandlerAdapter{
 	 */
 	 @Override  
 	 public void channelRead(ChannelHandlerContext ctx, Object obj) throws Exception {  
-	        System.out.println("server channelRead..");  
-	        if (obj instanceof HeartbeatMsg) {
-	        	HeartbeatMsg msg = (HeartbeatMsg)obj;
+	        if (obj instanceof HeartbeatMessage) {
+	        	HeartbeatMessage msg = (HeartbeatMessage)obj;
 	        	smp.messageProcess(ctx, msg);
-	        	//System.out.println(ctx.channel().remoteAddress() + "->Server :" + msg.toString());  
 			}	
 	 }
 	 

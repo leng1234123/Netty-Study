@@ -1,8 +1,6 @@
-package com.netty.heartbeat.server;
+package com.netty.heartbeat.message;
 
 import java.nio.charset.Charset;
-
-import com.netty.heartbeat.message.HeartbeatMsg;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -13,11 +11,11 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
  * @author lengyul
  *
  */
-public class ServerMsgDecoder extends LengthFieldBasedFrameDecoder  {
+public class MessageDecoder extends LengthFieldBasedFrameDecoder  {
 
-    //判断传送客户端传送过来的数据是否按照协议传输，头部信息的大小应该是 byte+byte+int = 1+1+4 = 6
-    private static final int HEADER_SIZE = 6;
-	
+    //判断传送客户端传送过来的数据是否按照协议传输，头部信息的大小应该是byte+int = 1+4 = 5
+    private final int HEADER_SIZE = 5;
+	private int count = 0;
     /**
      * 
      * @param maxFrameLength  解码时，处理每个帧数据的最大长度
@@ -27,7 +25,7 @@ public class ServerMsgDecoder extends LengthFieldBasedFrameDecoder  {
      * @param initialBytesToStrip 为true，当frame长度超过maxFrameLength时立即报TooLongFrameException异常，为false，读取完整个帧再报异常
      * @param failFast
      */
-	public ServerMsgDecoder(int maxFrameLength, int lengthFieldOffset, int lengthFieldLength,
+	public MessageDecoder(int maxFrameLength, int lengthFieldOffset, int lengthFieldLength,
 			int lengthAdjustment, int initialBytesToStrip, boolean failFast) {
 			super(maxFrameLength, lengthFieldOffset, lengthFieldLength, lengthAdjustment, initialBytesToStrip, failFast);
 	}
@@ -37,20 +35,27 @@ public class ServerMsgDecoder extends LengthFieldBasedFrameDecoder  {
 		 if (in == null) {
 			return null;
 		 }
+		 
+		 System.out.println(this.getClass().hashCode()+"\t readableBytes - "+in.readableBytes() + "\t" + "count - " + ++count);
+		 int mark = in.readerIndex();//read the position
 		 //如果可读字节数小于头部信息
 		 if (in.readableBytes() < HEADER_SIZE) {
-			 throw new Exception("可读字节数小于头部信息,数据格式不正确");
+			// throw new Exception("可读字节数小于头部信息,数据格式不正确");
+			 return null;
 		 }
 		 //get开头的方法读取字节时不会移动指针,read开头的方法读取字节时的指针会移动
-		 byte type = in.readByte();//指令类型
-		 byte flag = in.readByte();//指令标识
-		 int length = in.readInt();//数据长度
-		 if (in.readableBytes() < length) {
-			 throw new Exception("可读字节数小于数据长度,数据格式不正确");
+		 byte type = in.readByte();//消息类型
+		 int length = in.readInt();//消息长度
+		 
+		 int dl = length - HEADER_SIZE;//消息内容长度
+		 if (in.readableBytes() < dl) {
+			// throw new Exception("可读字节数小于数据长度,数据格式不正确");
+			 in.readerIndex(mark);
+			 return null;
 		 }
-		 ByteBuf buf = in.readBytes(length);//数据内容
+		 ByteBuf buf = in.readBytes(dl);//消息内容
 		 String data = buf.toString(Charset.forName("UTF-8"));
-		 return new HeartbeatMsg(type, flag, length, data);
+		 return new HeartbeatMessage(type, data);
 	 }
 
 	

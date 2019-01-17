@@ -1,8 +1,6 @@
-package com.netty.heartbeat.client;
+package com.netty.heartbeat.message;
 
 import java.nio.charset.Charset;
-
-import com.netty.heartbeat.message.HeartbeatMsg;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -14,21 +12,18 @@ import io.netty.util.CharsetUtil;
  * @author lengyul
  *
  */
-public class ClientMsgEncoder extends MessageToByteEncoder<HeartbeatMsg> {
+public class MessageEncoder extends MessageToByteEncoder<HeartbeatMessage> {
 
 	@Override
-	protected void encode(ChannelHandlerContext ctx, HeartbeatMsg msg, ByteBuf out) throws Exception {
+	protected void encode(ChannelHandlerContext ctx, HeartbeatMessage msg, ByteBuf out) throws Exception {
 		if (null == msg) {
 			throw new NullPointerException("msg is null");
 		}
-		
-		String  data = msg.getData();
-		byte[] dataBytes = data.getBytes(CharsetUtil.UTF_8);
-		
 		out.writeByte(msg.getType());
-		out.writeByte(msg.getFlag());
-		out.writeInt(dataBytes.length);
+		byte[] dataBytes = msg.getData().getBytes(CharsetUtil.UTF_8);
+		out.writeInt(msg.getLength());
 		out.writeBytes(dataBytes);
+		System.out.println("client1: "+msg.toString());
 	}
 
 }

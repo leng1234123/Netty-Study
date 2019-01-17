@@ -2,6 +2,9 @@ package com.netty.heartbeat.server;
 
 import java.util.concurrent.TimeUnit;
 
+import com.netty.heartbeat.message.ByteToMessageDecoder;
+import com.netty.heartbeat.message.MessageDecoder;
+
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -18,7 +21,8 @@ public class ServerHeartBeatHandlerInitializer extends ChannelInitializer<Socket
 		// unit
 		// 每隔10s检测channelRead方法是否被调用,如果10s内channelRead方法没有被触发,就会调用userEventTriggered方法
 		pipeline.addLast(new IdleStateHandler(10, 0, 0, TimeUnit.SECONDS));
-		pipeline.addLast("decoder", new ServerMsgDecoder(1024 * 1024, 4, 2, 0, 0, false));
+	//	pipeline.addLast("decoder", new MessageDecoder(1024 , 1, 4, 0, 0, false));
+		pipeline.addLast("decoder", new ByteToMessageDecoder());
 		pipeline.addLast("encoder", new StringEncoder());
 		pipeline.addLast(new ServerHeartBeatHandler());
 	}
