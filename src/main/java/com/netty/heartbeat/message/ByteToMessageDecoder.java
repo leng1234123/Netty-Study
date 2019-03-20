@@ -19,14 +19,17 @@ public class ByteToMessageDecoder extends io.netty.handler.codec.ByteToMessageDe
 		if (in.readableBytes() < HEADER_SIZE) {
 			return;
 		}
-		int mark = in.readerIndex();//read the position
+	//	int mark = in.readerIndex();//read the position
+		//使用ByteBuf中的标记读索引 
+		in.markReaderIndex();
 		// get开头的方法读取字节时不会移动指针,read开头的方法读取字节时的指针会移动
 		byte type = in.readByte();// 消息类型
 		int length = in.readInt();// 消息长度
 
 		int dl = length - HEADER_SIZE;// 消息内容长度
 		if (in.readableBytes() < dl) {
-			in.readerIndex(mark);
+		//	in.readerIndex(mark);
+			in.resetReaderIndex(); // 索引重置到标记位置
 			return;
 		}
 		ByteBuf buf = in.readBytes(dl);// 消息内容

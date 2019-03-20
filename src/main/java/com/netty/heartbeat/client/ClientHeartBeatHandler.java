@@ -30,7 +30,7 @@ public class ClientHeartBeatHandler extends ChannelInboundHandlerAdapter {
                      如果channelHandler有同样的方法时,只会调用一次,
                      如果需要后续的channelHandler调用需要调用fire开头的方法
         */
-       /* for (int i = 1; i <= 1000; i++) {
+        /*for (int i = 1; i <= 1000; i++) {
         	 String data = new String("The"+i+"number");
              msg = new HeartbeatMessage((byte)0xA2, data);
              ctx.channel().writeAndFlush(msg);
