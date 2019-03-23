@@ -12,7 +12,7 @@ import io.netty.util.CharsetUtil;
  * @author lengyul
  *
  */
-public class MessageEncoder extends MessageToByteEncoder<HeartbeatMessage> {
+public class HeartbeatMessageEncoder extends MessageToByteEncoder<HeartbeatMessage> {
 
 	@Override
 	protected void encode(ChannelHandlerContext ctx, HeartbeatMessage msg, ByteBuf out) throws Exception {

@@ -6,7 +6,7 @@ import java.util.List;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 
-public class ByteToMessageDecoder extends io.netty.handler.codec.ByteToMessageDecoder {
+public class HeartbeatMessageDecoder extends io.netty.handler.codec.ByteToMessageDecoder {
 
 	private final int HEADER_SIZE = 5;
 
