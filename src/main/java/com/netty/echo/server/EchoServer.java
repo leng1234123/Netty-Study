@@ -33,9 +33,16 @@ public class EchoServer {
            *     端口绑定，注册事件
      * 4.doBind() -> fireChannelActive() -> beginRead() 绑定完成 注册事件OP_ACCPET
      */
-    public void start() throws InterruptedException{
+    public void start() throws InterruptedException {
     	EventLoopGroup bossGroup = new NioEventLoopGroup(1); //负责处理客户端连接线程
     	EventLoopGroup workerGroup = new NioEventLoopGroup();//读写线程默认CPU处理器数量 * 2
+    	/*
+    	 *  创建NioEventLoopGroup()  
+    	 *  Executor(线程执行器) 使用DefaultThreadFactory类中的newThread()对线程进行封装并设置线程名称 --> 
+    	 *  EventExecutor(保存创建的NioEventLoop)  NioEventLoop调用父类构造器配置参数  -->
+    	 *  EventExecutorChooser(负责给新连接绑定对应的NioEventLoop)，next()方法返回一个EventExecutor[i] = NioEventLoop
+    	 */
+    	
     	try {
 			ServerBootstrap bootstrap = new ServerBootstrap();//创建 ServerBootstrap 辅助类
 			bootstrap
